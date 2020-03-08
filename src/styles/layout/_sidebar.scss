@@ -5,20 +5,20 @@
     cursor: pointer;
 
     &:hover {
-        background-color: rgba(221, 226,255, 0.08);
+        background-color: $sidebar-tab-highlight-color;
     };
     padding-left: 2rem;
     padding-right: 2rem;
 }
 
 .menu-item__active-container {
-    background-color: rgba(221, 226, 255, 0.08);
+    background-color: $sidebar-tab-highlight-color;
 }
 
 .menu-item__active-bar {
         height: 3.5rem;
         width: 3px;
-        background-color: #DDE2FF;
+        background-color: $sidebar-active-text-color;
         position: absolute;
         left: 0;
 }
@@ -28,12 +28,12 @@
     font-size: 1rem;
     line-height: 1.25rem;
     letter-spacing: 0.2px;
-    color: #A4A6B3;
+    color: $sidebar-text-color;
     margin-left: 1.5rem;
 }
 
 .menu-item__active-title {
-    color: #DDE2FF;
+    color: $sidebar-active-text-color;
 }
 
 // SIDE BAR LOGO CONTAINER STYLE SHEET
@@ -49,7 +49,7 @@
     font-size: 1.2rem;
     line-height: 1.5rem;
     letter-spacing: 0.4px;
-    color: #A4A6B3;
+    color: $sidebar-text-color;
     opacity: 0.7;
     margin-left: 0.75rem;
 }
@@ -64,8 +64,8 @@
 }
 .sidebar__container {
     position: fixed;
-    // background: linear-gradient(0deg,#3358f4,#1d8cf8);
-    background-color: #363740;
+    // background: $alternate-sidebar-background;
+    background-color: $primary-sidebar-background;
     width: 18.75rem;
     padding-top: 2rem;
     height: calc(100%)
@@ -90,7 +90,7 @@
 }
 
 .sidebar__separator {
-    border-top: 1px solid $sidebar-primary-background;
+    border-top: 1px solid $sidebar-separator;
     margin-top: 2rem;
     margin-bottom: 2rem;
     opacity: 0.25;
