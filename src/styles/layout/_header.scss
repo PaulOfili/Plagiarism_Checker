@@ -1,0 +1,51 @@
+.header-container {
+    height: 0.1875rem
+}
+
+.header__profile {
+    font-family: $font-stack;
+    font-style: normal;
+    font-weight: 600;
+    font-style: 1rem;
+    line-height: 1.3rem;
+    text-align: right;
+    letter-spacing: 0.2;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+.header__separator{
+    border-left: 1px solid #DFE0EB;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    height: 2rem;
+    width: 2px;
+
+    @media (max-width: 768px) {
+        margin-left: 0.75rem;
+        margin-right: 0.75rem;
+    }
+}
+
+.header-title{
+    font-family: $font-stack;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    letter-spacing: 0.3;
+
+    @media (max-width: 768px) {
+        margin-left: 2.25rem;
+    }
+
+    @media (max-width: 468px) {
+        font-size: 1.25rem;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

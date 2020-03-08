@@ -1,0 +1,6 @@
+/* Mixin to handle the vendor property for the toast display animation */
+@mixin toastDisplayMixin($initialProperty, $finalProperty) {
+    -webkit-animation: $initialProperty, $finalProperty;
+    -moz-animation: $initialProperty, $finalProperty;
+    animation: $initialProperty, $finalProperty;
+}

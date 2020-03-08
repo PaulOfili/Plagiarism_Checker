@@ -1,0 +1,97 @@
+//SIDE BAR MENU ITEM STYLE SHEET
+
+.menu-item__container {
+    height: 3.5rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(221, 226,255, 0.08);
+    };
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.menu-item__active-container {
+    background-color: rgba(221, 226, 255, 0.08);
+}
+
+.menu-item__active-bar {
+        height: 3.5rem;
+        width: 3px;
+        background-color: #DDE2FF;
+        position: absolute;
+        left: 0;
+}
+    
+.memu-item__title {
+    font-family: $font-stack;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.2px;
+    color: #A4A6B3;
+    margin-left: 1.5rem;
+}
+
+.menu-item__active-title {
+    color: #DDE2FF;
+}
+
+// SIDE BAR LOGO CONTAINER STYLE SHEET
+.logo__container {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.logo__title {
+    font-family: $font-stack;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.4px;
+    color: #A4A6B3;
+    opacity: 0.7;
+    margin-left: 0.75rem;
+}
+
+
+// SIDE BAR STYLE SHEET
+.sidebar__burger-icon {
+    cursor: pointer;
+    position: absolute;
+    left: 1.5rem;
+    top: 2.125rem;
+}
+.sidebar__container {
+    position: fixed;
+    background-color: #363740;
+    width: 18.75rem;
+    padding-top: 2rem;
+    height: calc(100%)
+}
+
+.sidebar__main-container {
+    height: 100%;
+    min-height: 100vh;
+}
+
+.sidebar__menu-item-list {
+    margin-top: 3.25rem;
+}
+
+.sidebar__outside-layer {
+    position: absolute;
+    width: 100vw;
+    min-width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.50);
+    z-index: 900
+}
+
+.sidebar__separator {
+    border-top: 1px solid $sidebar-primary-background;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    opacity: 0.25;
+}
+

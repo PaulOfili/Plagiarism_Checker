@@ -1,0 +1,18 @@
+.app-container {
+    height: 100%;
+    min-height: 100vh
+}
+
+.app-content {
+    margin-top: 3.375rem
+}
+
+.app-main-block {
+    background-color: #F7F8FC;
+    padding: 2rem;
+    margin-left: 18.75rem;
+    
+    @media (max-width: 768px) {
+        margin-left: 0;
+    }
+}

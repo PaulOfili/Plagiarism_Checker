@@ -1,0 +1,27 @@
+.toast-container {
+    visibility: hidden;
+    min-width: 20rem;
+    margin-left: -10rem;
+    border-radius: 0.2rem;
+    text-align: center;
+    position: fixed;
+    padding: 1rem;
+    z-index: 1;
+    left: 50%;
+    top: 1rem;
+
+    &.visible {
+        visibility: visible;
+        @include toastDisplayMixin(fadeIn 0.5s, fadeOut 0.5s 4.6s);
+    }
+}
+
+.toast-dismiss{
+    border: none;
+    background: transparent;
+    margin-left: 0.6rem;
+    position: relative;
+    top: 0.08rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
