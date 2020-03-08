@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import LayoutHandler from './layouts/layoutHandler';
 import './styles/main.scss';
+require('dotenv').config();
 
 class  App extends React.Component {
 
