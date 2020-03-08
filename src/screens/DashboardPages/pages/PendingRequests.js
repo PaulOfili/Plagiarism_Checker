@@ -59,13 +59,9 @@ function PendingRequests() {
   // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
 
-  useEffect(() => {
-    getAllPendingRequestsDispatch()
-  },[])
-
 
   const assignRequests = () => {
-      postAssignRequestsDispatch([1,2])
+     //DO SOMETHING LATER
   };
 
   
@@ -83,7 +79,7 @@ function PendingRequests() {
   return (
       <>
           <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-          <ConfirmModalComponent disabled={!hasSelected} title="Do you want to be assigned these items?" content={selectedRows} confirmText="Assign to me"performAction={assignRequests}/>
+          <ConfirmModalComponent disabled={!hasSelected} title="Do you want to be assigned these items?" content={selectedRows} confirmText="Assign to me" performAction={assignRequests}/>
       </>
       
   )
