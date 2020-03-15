@@ -6,10 +6,12 @@
 @import 'base/typography';
 @import 'abstracts/mixins';
 @import 'abstracts/variables';
+@import 'components/passwordStrengthComponent';
 @import 'components/confirmModalConfirmation';
 @import 'layout/header';
 @import 'layout/sidebar';
 @import 'layout/toast';
 @import 'pages/dashboardPages';
 @import 'pages/pageNotFound';
-@import 'pages/SearchReport';
+@import 'pages/searchReport';
+@import 'pages/signUp'

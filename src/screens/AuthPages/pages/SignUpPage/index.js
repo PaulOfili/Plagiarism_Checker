@@ -18,7 +18,8 @@ import {
 import { Radio, Button } from 'antd';
 import { auth, generateUserDocument } from '../../../../config/Firebase/firebase';
 import { loginUser } from '../../../../store/actions/auth';
-// import zxcvbn from 'zxcvbn';
+import zxcvbn from 'zxcvbn';
+import PasswordStregthComponent from "../../../../components/passwordStrengthComponent";
 
 function SignUp() {
 
@@ -28,7 +29,7 @@ function SignUp() {
   const [ username, setUsername ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
-  // const [ passwordStrength, setPasswordStrength ] = useState('');
+  const [ passwordStrength, setPasswordStrength ] = useState('');
   const [ confirmPassword, setConfirmPassword ] = useState('');
   const [ accountType, setAccountType ] = useState('student');
   const [ error, setError ] = useState(null)
@@ -44,7 +45,7 @@ function SignUp() {
       setEmail(value);
     } else if (name === 'password') {
       setPassword(value);
-      // setPasswordStrength(zxcvbn(password).score);
+      setPasswordStrength(zxcvbn(password).score);
     } else if (name === 'confirmPassword') {
       setConfirmPassword(value);
     }
@@ -65,6 +66,7 @@ function SignUp() {
     
     if (validateCredentials()) {
       setLoading(true);
+
       try {
         const { user } = await auth.createUserWithEmailAndPassword(email, password);
         const userData = await generateUserDocument(user, {accountType, username});
@@ -102,7 +104,7 @@ function SignUp() {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input name="username" value={username} onChange={onChangeHandler} placeholder="Firstname" type="text" />
+                  <Input name="username" value={username} onChange={onChangeHandler} placeholder="Firstname" type="text" required />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -124,6 +126,7 @@ function SignUp() {
                   </InputGroupAddon>
                   <Input name="password" value={password} onChange={onChangeHandler} placeholder="Enter Password" type="password" autoComplete="new-password"/>
                 </InputGroup>
+                <PasswordStregthComponent passwordStrength={passwordStrength} password={password}/>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative">
@@ -135,12 +138,7 @@ function SignUp() {
                   <Input name="confirmPassword" value={confirmPassword} onChange={onChangeHandler} placeholder="Confirm Password" type="password" autoComplete="new-password"/>
                 </InputGroup>
               </FormGroup>
-              {/* <div className="text-muted font-italic">
-                <small>
-                  password strength:{" "}
-                  <span className="text-success font-weight-700">{passwordStrength}</span>
-                </small>
-              </div> */}
+              
               <div className="text-center">
               <Radio.Group onChange={onRadioChangeHandler} value={accountType}>
                 <Radio value='student'>I am a Student</Radio>
