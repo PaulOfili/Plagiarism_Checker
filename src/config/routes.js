@@ -1,8 +1,8 @@
 // import SearchReport from '../screens/DashboardPages/pages/SearchReport';
 import DashboardHome from '../screens/DashboardPages/pages/DashBoardHome';
-import PendingRequests from '../screens/DashboardPages/pages/PendingRequests';
-import AssignedRequests from '../screens/DashboardPages/pages/AssignedRequests';
-import CompletedRequests from '../screens/DashboardPages/pages/CompletedRequests';
+import RecentSubmissions from '../screens/DashboardPages/pages/RecentSubmissions';
+import AssignmentUpload from '../screens/DashboardPages/pages/AssignmentUpload';
+import StudentSubmissions from '../screens/DashboardPages/pages/StudentSubmissions';
 import SignIn from '../screens/AuthPages/pages/SignInPage';
 import SignUp from '../screens/AuthPages/pages/SignUpPage';
 
@@ -19,14 +19,14 @@ const student_routes = [
         header_name: 'Upload Assignment',
         sidebar_name: 'Upload Assignment',
         icon: 'book',
-        component: AssignedRequests
+        component: AssignmentUpload
     },
     {
         url: 'recent-submissions',
         header_name: 'Recent Submissions',
         sidebar_name: 'Recent Submissions',
         icon: 'container',
-        component: PendingRequests
+        component: RecentSubmissions
     }
 ];
 
@@ -43,7 +43,7 @@ const lecturer_routes = [
         header_name: 'View All Submissions',
         sidebar_name: 'View All Submissions',
         icon: 'book',
-        component: CompletedRequests
+        component: StudentSubmissions
     }
 ]
 

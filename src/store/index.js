@@ -27,7 +27,9 @@ store.subscribe(
     throttle(() => {
         saveStoreToSessionStorage({
             auth: {
-                isLoggedIn: store.getState().auth.isLoggedIn
+                userData: store.getState().auth.userData,
+                isLoggedIn: store.getState().auth.isLoggedIn,
+                isLoading: store.getState().auth.isLoading,
             }
         });
     }, 1000)

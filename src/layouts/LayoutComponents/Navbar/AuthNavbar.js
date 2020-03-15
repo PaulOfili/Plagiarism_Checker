@@ -49,12 +49,6 @@ function AuthNavbar() {
               </div>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink className="nav-link-icon" to="/dashboard" tag={Link}>
-                    <i className="ni ni-planet" />
-                    <span className="nav-link-inner--text">Dashboard</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
                   <NavLink
                     className="nav-link-icon"
                     to="/auth/register"
@@ -71,7 +65,7 @@ function AuthNavbar() {
                     tag={Link}
                   >
                     <i className="ni ni-key-25" />
-                    <span className="nav-link-inner--text">Login</span>
+                    <span className="nav-link-inner--text">Login to Dashboard</span>
                   </NavLink>
                 </NavItem>
               </Nav>

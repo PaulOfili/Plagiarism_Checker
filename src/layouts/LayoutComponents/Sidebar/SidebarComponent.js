@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Column, Row } from 'simple-flexbox';
 import MenuItemComponent from './MenuItemComponent';
 import {Icon} from 'antd';
 import PropTypes from 'prop-types';
 import all_routes from '../../../config/routes';
+import { Link } from 'react-router-dom';
 
 const styles = {
     mainContainerMobile: {
@@ -35,6 +37,8 @@ const styles = {
 }
 
 function SidebarComponent({onChange, selectedItem}) {
+
+    const userData = useSelector((store) => store.auth.userData)
 
     const [expanded, setExpanded] = useState(false);
 
@@ -69,20 +73,22 @@ function SidebarComponent({onChange, selectedItem}) {
         columnBreakPoint = { ...columnBreakPoint, ...styles.hide }
     }
 
-
-    const student_menu = all_routes['student_routes'];
+    const route_type = userData.accountType === 'student' ? 'student_routes' : 'lecturer_routes';
+    const current_menu = all_routes[route_type];
 
     return (
         <div style={{ position: 'relative' }}>
             <Row className="sidebar__main-container" breakpoints={{ 768: rowBreakpoint }}>
                 {(isMobile && !expanded) && renderBurger()}
                 <Column className="sidebar__container" breakpoints={{ 768: columnBreakPoint }}>
-                    <Row className="logo__container" horizontal="center" vertical="center">        
-                        <span className="logo__title">Plagiarism Checker</span>
+                    <Row className="logo__container" horizontal="center" vertical="center">
+                        <Link to='/'>
+                            <span className="logo__title">Plagiarism Checker</span>
+                        </Link>        
                     </Row>
                     <Column className="sidebar__menu-item-list">
                         {
-                            student_menu.map((menu, index) => (
+                            current_menu.map((menu, index) => (
                                 <MenuItemComponent
                                     key={index}
                                     url={menu.url}
@@ -92,7 +98,7 @@ function SidebarComponent({onChange, selectedItem}) {
                                 />                            
     ))
                         }
-                        <div className="sidebar__separator"></div>
+                        {/* <div className="sidebar__separator"></div> */}
    
                     </Column>
                 </Column>

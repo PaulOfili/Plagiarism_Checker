@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import "firebase/auth";
+import "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -15,3 +16,40 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
+export const db = firebase.firestore();
+
+export const generateUserDocument = async (user, additionalData) => {
+  if (!user) return;
+
+  const userRef = db.doc(`users/${user.uid}`);
+  const userDocument = await userRef.get();
+
+  if (!userDocument.exists) {
+    const {email} = user;
+
+    try {
+      await userRef.set({
+        email,
+        ...additionalData
+      });
+    } catch (error) {
+      console.log("Error creating document", error);
+    }
+  }
+
+  return getUserDocument(user.uid)
+}
+
+const getUserDocument = async uid  => {
+  if (!uid) return null;
+
+  try {
+    const userDocument = await db.doc(`users/${uid}`).get();
+    return {
+      uid, 
+      ...userDocument.data()
+    };
+  } catch (error) {
+    console.log("Error getting data", error);
+  }
+}

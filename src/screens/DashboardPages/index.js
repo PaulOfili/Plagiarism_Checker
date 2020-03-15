@@ -3,8 +3,7 @@ import { Column, Row } from 'simple-flexbox';
 import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import SidebarComponent from '../../layouts/LayoutComponents/Sidebar/SidebarComponent';
-import HeaderComponent from '../../layouts/LayoutComponents/Header/HeaderComponent';
-import SearchReport from './pages/SearchReport';
+import DashboardHeader from '../../layouts/LayoutComponents/Header/DashboardHeader';
 import PropTypes from 'prop-types';
 import all_routes from '../../config/routes';
 
@@ -36,7 +35,7 @@ function Dashboard({location}) {
         <Row className="app-container">
             <SidebarComponent selectedItem={selectedItem} onChange={(selectedItem) => setSelectedItem(selectedItem)} />
             <Column flexGrow={1} className="app-main-block">
-                <HeaderComponent title={currentElement.header} isLoggedIn={isLoggedIn}/>
+                <DashboardHeader title={currentElement.header} isLoggedIn={isLoggedIn}/>
                 <div className="app-content">
                     <Switch>
                         {Object.keys(pathMapping).map((key, index) => (

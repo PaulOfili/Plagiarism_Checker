@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Table } from 'antd';
 import ConfirmModalComponent from '../../../components/ConfirmModalComponent';
-import { postAssignRequests, editAssignRequests, getAllPendingRequests } from '../../../store/actions/requests';
+import { editAssignRequests } from '../../../store/actions/requests';
 
 const columns = [
     {
@@ -47,15 +47,13 @@ const columns = [
     },
   ];
 
-function PendingRequests() {        
+function RecentSubmissions() {        
 
   
   const selectedRowKeys = useSelector((store) => store.requests.assignToMeRequests.data);
 
   const actionDispatch = useDispatch();
-  const postAssignRequestsDispatch = useCallback((data) => actionDispatch(postAssignRequests(data)),[actionDispatch]);
   const editAssignRequestsDispatch = useCallback((data) => actionDispatch(editAssignRequests(data)),[actionDispatch]);
-  const getAllPendingRequestsDispatch = useCallback(() => actionDispatch(getAllPendingRequests()), [actionDispatch]);
   // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
 
@@ -85,4 +83,4 @@ function PendingRequests() {
   )
 }
 
-export default PendingRequests;
+export default RecentSubmissions;

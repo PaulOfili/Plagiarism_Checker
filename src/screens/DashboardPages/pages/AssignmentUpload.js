@@ -46,7 +46,7 @@ const columns = [
 ];
 
 
-function AssignedRequests() {    
+function AssignmentUpload() {    
 
     return (
         <div>
@@ -57,7 +57,7 @@ function AssignedRequests() {
     )
 }
 
-export default AssignedRequests;
+export default AssignmentUpload;
 
 
 

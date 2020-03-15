@@ -1,7 +1,5 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 // import searchReportService from '../../../services/searchReport.service';
-import { submitSearchReport } from '../../../services/searchReport.service';
-
 
 import {
     POST_SUBMIT_REPORT,
@@ -19,7 +17,7 @@ function* postSubmitReport(action) {
 
     try {        
 
-        const response = yield call(submitSearchReport, action.requestId, action.payload)
+        // const response = yield call(submitSearchReport, action.requestId, action.payload)
         
         yield put({
             type: POST_SUBMIT_REPORT_SUCCESS,

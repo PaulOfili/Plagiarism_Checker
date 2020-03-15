@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CompletedRequests() {    
+function StudentSubmissions() {    
 
     return (
         <div>
@@ -10,4 +10,4 @@ function CompletedRequests() {
     )
 }
 
-export default CompletedRequests;
+export default StudentSubmissions;

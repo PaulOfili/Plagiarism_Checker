@@ -3,17 +3,17 @@ import { Route, Redirect } from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 
-function AuthorizedRoute({component: Component, ...props}) {
+function GuardRoute({component: Component, ...props}) {
 
     const isLoggedIn = useSelector((store) => store.auth.isLoggedIn);
     
     return (
         <Route {...props} render={ () => (
-            isLoggedIn
+            !isLoggedIn
             ? <Component />
-            : <Redirect to='/' />
+            : <Redirect to='/dashboard' />
         )}/>
     )
 }
 
-export default AuthorizedRoute;
+export default GuardRoute;
