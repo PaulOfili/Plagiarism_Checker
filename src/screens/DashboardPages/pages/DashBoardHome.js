@@ -4,7 +4,8 @@ function DashboardHome() {
 
     return (
         <div>
-            Welcome to your Dashboard page
+            <p>Welcome to your Dashboard page</p>
+            <p>More content coming soon!!!!!</p>
         </div>
         
     )

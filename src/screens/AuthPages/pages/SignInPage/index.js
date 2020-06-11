@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 
 import { Button } from 'antd';
-import { auth, generateUserDocument } from '../../../../config/Firebase/firebase';
+import { auth, getUserDocument } from '../../../../config/Firebase/firebase';
 import { loginUser } from '../../../../store/actions/auth';
 
 function SignIn() {
@@ -47,7 +47,8 @@ function SignIn() {
     setLoading(true);
     try {
       const { user } = await auth.signInWithEmailAndPassword(email, password);
-      const userData = await generateUserDocument(user);
+      const userData = await getUserDocument(user.uid);
+      console.log(userData)
       setLoading(false);
       loginUserDispatch(userData);
     }

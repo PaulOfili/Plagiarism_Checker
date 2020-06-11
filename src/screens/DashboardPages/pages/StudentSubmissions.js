@@ -4,7 +4,8 @@ function StudentSubmissions() {
 
     return (
         <div>
-            Welcome to all completed requests
+            <p>Welcome to all Student Submission.</p>
+            <p>More content coming soon!!!!!</p>
         </div>
         
     )

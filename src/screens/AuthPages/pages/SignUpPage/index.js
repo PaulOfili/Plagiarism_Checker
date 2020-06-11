@@ -16,7 +16,7 @@ import {
   Alert
 } from "reactstrap";
 import { Radio, Button } from 'antd';
-import { auth, generateUserDocument } from '../../../../config/Firebase/firebase';
+import { auth, createUserDocument } from '../../../../config/Firebase/firebase';
 import { loginUser } from '../../../../store/actions/auth';
 import zxcvbn from 'zxcvbn';
 import PasswordStregthComponent from "../../../../components/passwordStrengthComponent";
@@ -29,7 +29,7 @@ function SignUp() {
   const [ username, setUsername ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
-  const [ passwordStrength, setPasswordStrength ] = useState('');
+  const [ passwordStrength, setPasswordStrength ] = useState(0);
   const [ confirmPassword, setConfirmPassword ] = useState('');
   const [ accountType, setAccountType ] = useState('student');
   const [ error, setError ] = useState(null)
@@ -69,7 +69,7 @@ function SignUp() {
 
       try {
         const { user } = await auth.createUserWithEmailAndPassword(email, password);
-        const userData = await generateUserDocument(user, {accountType, username});
+        const userData = await createUserDocument(user, {accountType, username});
         setLoading(false);
         loginUserDispatch(userData);
       }

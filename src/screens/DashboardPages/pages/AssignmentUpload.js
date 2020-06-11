@@ -1,58 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'antd';
+import { Upload, Icon, Select, Button, message } from 'antd';
 
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-];
+const { Dragger } = Upload;
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: text => text,
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-        <span>
-            <Link to={`/dashboard/search-report/${record.key}`}>Generate Search Report</Link>
-        </span>
-        ),
-    },
-];
+const { Option } = Select;
 
 
-function AssignmentUpload() {    
+
+function AssignmentUpload() { 
+    const [fileList, setFileList] = useState([])
+    const [scanning, setScanning] = useState(false)
+
+    const handleChange = (value) => {
+        console.log(value)
+    }
+
+    const handleScan = () => {
+
+    }
+
+    const draggerProps = {
+        name: 'file',
+        listType: 'picture',
+        onRemove: file => {
+            setFileList([])
+        },
+        beforeUpload: file => {
+            setFileList([file])
+            return false;
+        },
+        fileList
+      };
 
     return (
-        <div>
-            Welcome to all assigned requests
-            <br />
-            <Table columns={columns} dataSource={data} />
+        <div className='upload-container'>
+            <div className='select-course'>
+                <p>Select Course</p>
+                <Select 
+                    defaultValue="name" 
+                    onChange={handleChange} 
+                    style={{ width: 200 }}
+                    size='large'>
+                    <Option value="name">Name</Option>
+                    <Option value="newest">Newest first</Option>
+                    <Option value="similarity" >Similarity score</Option>
+                    <Option value="status">Status</Option>
+                </Select>
+            </div>
+            <div className='upload-file'>
+                <Dragger {...draggerProps}>
+                    <p className="ant-upload-drag-icon">
+                        <Icon type="inbox" />
+                    </p>
+                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                </Dragger>
+                <div className="scan-button-container">
+                    <Button
+                        style={{opacity: (fileList.length === 0) ? 0: 1}}
+                        size="large"
+                        type="primary"
+                        onClick={handleScan}
+                        loading={scanning}
+                    >
+                        Scan
+                    </Button>
+                </div>
+            </div>
+
         </div>
     )
 }

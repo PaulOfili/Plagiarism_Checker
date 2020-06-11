@@ -3,7 +3,7 @@ import Auth from '../screens/AuthPages';
 import Dashboard from '../screens/DashboardPages';
 import LandingPage from '../screens/LandingPage';
 import {BrowserRouter, Switch, Redirect} from 'react-router-dom';
-// import { auth, generateUserDocument } from '../config/Firebase/firebase';
+// import { auth, createUserDocument } from '../config/Firebase/firebase';
 import AuthorizedRoute from '../utilities/AuthorizedRoute';
 import GuardRoute from '../utilities/GuardRoute';
 
@@ -11,7 +11,7 @@ function LayoutHandler() {
 
     useEffect(() => {
         // auth.onAuthStateChanged(async userAuth => {
-        //     const user = await generateUserDocument(userAuth)
+        //     const user = await createUserDocument(userAuth)
         //     console.log(user)
         //     if (user) {
         //         loginUserDispatch(user)

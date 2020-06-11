@@ -1,0 +1,35 @@
+.filter-wrapper {
+    display: grid;
+    grid-template-areas:
+        "search sort";
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+@include phone {
+    .filter-wrapper {
+        grid-template-areas:
+        "search"
+        "sort";
+
+        text-align: center;
+    }
+}
+
+.search-filter {
+    grid-area: search;
+}
+
+.sort-filter {
+    grid-area: sort;
+    margin: 0 0 0 auto;
+}
+@include phone {
+    .sort-filter {
+        margin: auto;
+    }
+}
+
+.sort-filter__title {
+    margin-bottom: 0;
+    opacity: 0.6;
+}

@@ -31,7 +31,7 @@ function LandingHeader() {
                             <p className=" display-5 text-white mt-0 mb-5">
                                 An easy intuitive tool to fight against plagiarism thereby enabling students learn effectively.
                             </p>
-                            
+
                             <Link to="/auth" className="text-white"> 
                                 <Button
                                 color="info"

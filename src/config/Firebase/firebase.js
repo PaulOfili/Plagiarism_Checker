@@ -18,7 +18,7 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const db = firebase.firestore();
 
-export const generateUserDocument = async (user, additionalData) => {
+export const createUserDocument = async (user, additionalData) => {
   if (!user) return;
 
   const userRef = db.doc(`users/${user.uid}`);
@@ -40,11 +40,12 @@ export const generateUserDocument = async (user, additionalData) => {
   return getUserDocument(user.uid)
 }
 
-const getUserDocument = async uid  => {
+export const getUserDocument = async uid  => {
   if (!uid) return null;
 
   try {
     const userDocument = await db.doc(`users/${uid}`).get();
+
     return {
       uid, 
       ...userDocument.data()
