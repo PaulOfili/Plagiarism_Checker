@@ -14,7 +14,7 @@ function LandingHeader() {
             style={{
                 minHeight: "100vh",
                 backgroundImage:
-                "url(" + require("../../../assets/img/theme/profile-cover.jpg") + ")",
+                "url(" + require("../../../assets/img/landing-page-background.jpg") + ")",
                 backgroundSize: "cover",
                 backgroundPosition: "center top"
             }}

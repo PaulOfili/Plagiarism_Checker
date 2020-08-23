@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
 import { Modal, Icon } from 'antd';
 import PropTypes from 'prop-types';
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Auth from '../screens/AuthPages';
 import Dashboard from '../screens/DashboardPages';
 import LandingPage from '../screens/LandingPage';
@@ -8,16 +8,6 @@ import AuthorizedRoute from '../utilities/AuthorizedRoute';
 import GuardRoute from '../utilities/GuardRoute';
 
 function LayoutHandler() {
-
-    useEffect(() => {
-        // auth.onAuthStateChanged(async userAuth => {
-        //     const user = await createUserDocument(userAuth)
-        //     console.log(user)
-        //     if (user) {
-        //         loginUserDispatch(user)
-        //     }
-        // });
-    }, [])
 
     return (
         <>

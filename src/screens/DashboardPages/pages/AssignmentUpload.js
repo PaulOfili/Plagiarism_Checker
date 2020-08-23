@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Upload, Icon, Select, Button, message } from 'antd';
+import { Upload, Icon, Select, Button } from 'antd';
 
 const { Dragger } = Upload;
 
@@ -10,14 +9,14 @@ const { Option } = Select;
 
 function AssignmentUpload() { 
     const [fileList, setFileList] = useState([])
-    const [scanning, setScanning] = useState(false)
+    const [scanning, /*setScanning*/] = useState(false)
 
     const handleChange = (value) => {
         console.log(value)
     }
 
     const handleScan = () => {
-
+        // TODO Complete handle Scan
     }
 
     const draggerProps = {

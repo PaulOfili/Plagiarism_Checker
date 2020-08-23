@@ -1,11 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
 import { Table, Tag, Input, Select } from 'antd';
 import ConfirmModalComponent from '../../../components/ConfirmModalComponent';
-import { editAssignRequests } from '../../../store/actions/requests';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { string } from 'prop-types';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -45,8 +42,6 @@ const colorMapping = {
 
 function RecentSubmissions() {        
 
-  const actionDispatch = useDispatch();
-  const editAssignRequestsDispatch = useCallback((data) => actionDispatch(editAssignRequests(data)),[actionDispatch]);
 
   const assignRequests = () => {
      //DO SOMETHING LATER

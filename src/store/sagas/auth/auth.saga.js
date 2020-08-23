@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { LOGIN_USER, LOGIN_USER_SUCCESS } from '../../contants';
-// import { saveCookieData} from '../../../session/cookies';
 
 export function* loginUserSaga(action) {
     const user = action.payload;
@@ -17,7 +16,6 @@ export function* loginUserSaga(action) {
         type: LOGIN_USER_SUCCESS,
         payload: userData
     })
-
 }
 
 export function* loginUserWatcher() {
