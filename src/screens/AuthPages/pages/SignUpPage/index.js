@@ -19,7 +19,7 @@ import { Radio, Button } from 'antd';
 import { auth, createUserDocument } from '../../../../config/Firebase/firebase';
 import { loginUser } from '../../../../store/actions/auth';
 import zxcvbn from 'zxcvbn';
-import PasswordStrengthComponent from "../../../../components/PasswordStrengthComponent";
+import PasswordStrengthComponent from "../../../../components/PasswordStrengthCheckerComponent";
 
 function SignUp() {
 
