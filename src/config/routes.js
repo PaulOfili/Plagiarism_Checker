@@ -1,6 +1,7 @@
 // import SearchReport from '../screens/DashboardPages/pages/SearchReport';
 import DashboardHome from '../screens/DashboardPages/pages/DashBoardHome';
 import RecentSubmissions from '../screens/DashboardPages/pages/RecentSubmissions';
+import RecentScans from '../screens/DashboardPages/pages/RecentScans';
 import AssignmentUpload from '../screens/DashboardPages/pages/AssignmentUpload';
 import StudentSubmissions from '../screens/DashboardPages/pages/StudentSubmissions';
 import SignIn from '../screens/AuthPages/pages/SignInPage';
@@ -27,6 +28,13 @@ const student_routes = [
         sidebar_name: 'Recent Submissions',
         icon: 'container',
         component: RecentSubmissions
+    },
+    {
+        url: 'recent-scans',
+        header_name: 'Recent Scans',
+        sidebar_name: 'Recent Scans',
+        icon: 'book',
+        component: RecentScans
     }
 ];
 

@@ -8,6 +8,7 @@ require('dotenv').config();
 class  App extends React.Component {
 
   componentDidMount() {
+    // TODO Check out mdn sdc to refactor this listener, quite expensive!!!
       window.addEventListener('resize', this.resize);
   }
 

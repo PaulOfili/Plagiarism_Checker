@@ -19,12 +19,16 @@
 
 .upload-file {
     grid-area: upload;
-    height: 30rem;
+    height: 40rem;
     max-width: 60rem;
 
-    // TODO  Research on better way of doing this
-    .scan-button-container {
-        margin-top: 5rem;
-        text-align: end;
+    .upload-file-dragger {
+        height: 80%;
     }
+
+}
+
+.scan-button-container {
+    margin-top: 6rem;
+    text-align: end;
 }

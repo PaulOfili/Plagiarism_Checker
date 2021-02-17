@@ -50,5 +50,6 @@ const handleResponse = response => {
 }
 
 const handleError = error => {
+    console.log(error, error.message)
     throw new Error('Something went wrong. Please try again later');
 }

@@ -1,0 +1,64 @@
+.similarity-result-container{
+    padding: 0 1.3rem;
+}
+
+.similarity-result__metrics {
+    display: flex;
+    margin-top: 0rem;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.similarity-result__metrics-box {
+    display: flex;
+    flex: 0 1 22rem;
+    flex-direction: column;
+    border-radius: 10px;
+    border: solid 1px #e8e8e8;
+    padding: 1.6rem 2rem;
+    height: 11.2rem;
+    margin-bottom: 4rem;
+    justify-content: space-between;
+
+    p {
+       font-size: 2.1rem;
+       color: #000000;
+       font-weight: 200;
+    }
+}
+
+.similarity-result-score-container {
+    display: flex;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.similarity-result-score{
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .submit-button-container {
+        padding: 1rem 2rem;
+        height: 3.5rem;
+        
+    }
+
+}
+
+.similarity-result-websites {
+    width: 25rem;
+    border-left: solid 2px $gray;
+    padding: 0rem 0  0 2.5rem;
+
+    h1 {
+        margin-bottom: 3rem;
+    }
+}
+
+.similarity-result-website-card{
+    padding-bottom: 1rem;
+}

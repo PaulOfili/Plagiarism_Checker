@@ -48,7 +48,6 @@ function SignIn() {
     try {
       const { user } = await auth.signInWithEmailAndPassword(email, password);
       const userData = await getUserDocument(user.uid);
-      console.log(userData)
       setLoading(false);
       loginUserDispatch(userData);
     }

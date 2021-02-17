@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function PasswordStregthComponent({password, passwordStrength}) {
+function PasswordStrengthComponent({password, passwordStrength}) {
 
     const strengthClass = ['strength-meter mt-2', password.length > 0 ? 'visible' : 'invisible'].join(' ').trim();
     return (
@@ -16,9 +16,9 @@ function PasswordStregthComponent({password, passwordStrength}) {
     )
 }
 
-PasswordStregthComponent.propTypes = {
+PasswordStrengthComponent.propTypes = {
     passwordStrength: PropTypes.number,
     password: PropTypes.string
 }
 
-export default PasswordStregthComponent;
+export default PasswordStrengthComponent;

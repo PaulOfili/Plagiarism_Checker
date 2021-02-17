@@ -19,7 +19,7 @@ import { Radio, Button } from 'antd';
 import { auth, createUserDocument } from '../../../../config/Firebase/firebase';
 import { loginUser } from '../../../../store/actions/auth';
 import zxcvbn from 'zxcvbn';
-import PasswordStregthComponent from "../../../../components/passwordStrengthComponent";
+import PasswordStrengthComponent from "../../../../components/PasswordStrengthComponent";
 
 function SignUp() {
 
@@ -126,7 +126,7 @@ function SignUp() {
                   </InputGroupAddon>
                   <Input name="password" value={password} onChange={onChangeHandler} placeholder="Enter Password" type="password" autoComplete="new-password"/>
                 </InputGroup>
-                <PasswordStregthComponent passwordStrength={passwordStrength} password={password}/>
+                <PasswordStrengthComponent passwordStrength={passwordStrength} password={password}/>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative">

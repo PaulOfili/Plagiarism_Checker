@@ -52,7 +52,7 @@ function RecentSubmissions() {
     {
       title: 'Name',
       dataIndex: 'name',
-      render: text => <Link>{text}</Link>,
+      render: text => <Link to="">{text}</Link>,
     },
     {
       title: 'Date',
@@ -77,44 +77,41 @@ function RecentSubmissions() {
       title: 'Action',
       key: 'action',
       render: () => (
-        <ConfirmModalComponent performAction={assignRequests}/>
+        <ConfirmModalComponent iconType="delete" performAction={assignRequests}/>
       ),
     },
   ];
 
   const handleSearch = (value) => {
-    console.log(value)
   }
 
   const handleChange = (value) => {
-    console.log(value)
   }
 
   return (
       <>
-      <div class='filter-wrapper'>
-        <div class='search-filter'>
-          <Search
-            placeholder="Search by submission name"
-            onSearch={handleSearch}
-            style={{height: 67, maxWidth: '20rem'}}
-          />
+        <div className='filter-wrapper'>
+          <div className='search-filter'>
+            <Search
+              placeholder="Search by submission name"
+              onSearch={handleSearch}
+              style={{height: 67, maxWidth: '20rem'}}
+            />
+          </div>
+          <div className='sort-filter'>
+            <p className='sort-filter__title'>Sort By :</p>
+            <Select 
+              defaultValue="name" 
+              onChange={handleChange} 
+              style={{ width: 200 }}
+              size='large'>
+              <Option value="name">Name</Option>
+              <Option value="newest">Newest first</Option>
+              <Option value="similarity">Similarity score</Option>
+              <Option value="status">Status</Option>
+            </Select>
+          </div>
         </div>
-        <div class='sort-filter'>
-          <p class='sort-filter__title'>Sort By :</p>
-          <Select 
-            defaultValue="name" 
-            onChange={handleChange} 
-            style={{ width: 200 }}
-            size='large'>
-            <Option value="name">Name</Option>
-            <Option value="newest">Newest first</Option>
-            <Option value="similarity" >Similarity score</Option>
-            <Option value="status">Status</Option>
-          </Select>
-        </div>
-      </div>
-       
         <Table columns={columns} dataSource={data} />
       </>
       
