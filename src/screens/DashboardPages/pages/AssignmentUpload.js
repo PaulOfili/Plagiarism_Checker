@@ -93,12 +93,14 @@ function AssignmentUpload() {
                 </div>
                 <div className="scan-button-container">
                     <Button
-                        // disabled={(fileList.length === 0) ? 1: 0}
+                        // TODO Cant submit without slecting one document, refactor
+                        disabled={(fileList.length === 0) ? 1: 0}
                         size="large"
                         type="primary"
                         onClick={handleScan}
                         loading={scanning}
                     >
+                        {/* TODO Loader for all spinners */}
                         Scan
                     </Button>
                 </div>
