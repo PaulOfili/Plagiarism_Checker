@@ -17,7 +17,7 @@ function AssignmentUpload() {
 
     const userId = useSelector(store => store.auth.userData.uid)
     const [ fileList, setFileList ] = useState([])
-    const [ courseCode, setCourseCode ] = useState("eeg507")
+    const [ courseCode, setCourseCode ] = useState(lecturer_courses[0].key)
     const [ assignmentName, setAssignmentName ] = useState("");
     const [ scanning, setScanning ] = useState(false)
 
