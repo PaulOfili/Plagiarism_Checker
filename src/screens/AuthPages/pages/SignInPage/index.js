@@ -16,7 +16,7 @@ import {
   Alert
 } from "reactstrap";
 
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { auth, getUserDocument } from '../../../../config/Firebase/firebase';
 import { loginUser } from '../../../../store/actions/auth';
 
@@ -48,13 +48,17 @@ function SignIn() {
     try {
       const { user } = await auth.signInWithEmailAndPassword(email, password);
       const userData = await getUserDocument(user.uid);
-      setLoading(false);
+      if(!userData) {
+        throw new Error("UserData is empty");
+      }
       loginUserDispatch(userData);
     }
     catch(error) {
-      console.log(error)
-      setLoading(false);
+      message.error("An error happened. Please try again later.")
+      
       setError(error.message)
+    } finally {
+      setLoading(false);
     }
   }
 

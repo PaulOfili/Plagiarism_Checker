@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row } from 'simple-flexbox';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Icon } from 'antd';
+import { Menu, Dropdown, Icon, message } from 'antd';
 import { Button } from 'reactstrap';
 import { auth } from '../../../config/Firebase/firebase';
 import { logoutUser } from '../../../store/actions/auth';
@@ -11,7 +11,7 @@ import { logoutUser } from '../../../store/actions/auth';
 
 function DashboardHeader({ title, isLoggedIn, ...otherProps}) {
 
-    const username = useSelector((store) => store.auth.userData.username)
+    const username = useSelector((store) => store.auth.userData.firstname)
     
     const actionDispatch = useDispatch();
     const logoutUserDispatch = useCallback(() => actionDispatch(logoutUser()), [actionDispatch]);
@@ -22,7 +22,7 @@ function DashboardHeader({ title, isLoggedIn, ...otherProps}) {
             logoutUserDispatch();
         })
         .catch((error) => {
-            console.log('An error happened', error);
+            message.error("An error happened. Please try again.");
         })
     }
     const menu = (

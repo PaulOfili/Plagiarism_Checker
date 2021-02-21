@@ -35,7 +35,7 @@ export const createUserDocument = async (user, additionalData) => {
         ...additionalData
       });
     } catch (error) {
-      console.log("Error creating document", error);
+      throw new Error(`Error creating document, ${error}`)
     }
   }
 
@@ -53,7 +53,7 @@ export const getUserDocument = async uid  => {
       ...userDocument.data()
     };
   } catch (error) {
-    console.log("Error getting data", error);
+    throw new Error(`Error getting document, ${error}`)
   }
 }
 
@@ -67,8 +67,10 @@ export const createScanResult = async payload => {
     try {
       await scanResultRef.set(payload);
     } catch (error) {
-      console.log("Error creating document", error);
+      throw new Error(`Error creating document, ${error}`)
     }
+  } else {
+    throw new Error(`Document with same ref exists`)
   }
 }
 
@@ -82,8 +84,10 @@ export const updateScanResult = async (payload) => {
     try {
       await scanResultRef.update(payload);
     } catch (error) {
-      console.log("Error updating document", error);
+      throw new Error(`Error updating document, ${error}`)
     }
+  } else {
+    throw new Error(`ScanId not found`)
   }
 }
 
@@ -101,7 +105,7 @@ export const getAllScanResults = async userId => {
     
     return scannedResults;
   } catch (error) {
-    console.log("Error getting data", error);
+    throw new Error(`Error getting document, ${error}`)
   }
 }
 
@@ -116,22 +120,64 @@ export const getScanResult = async scanId => {
       ...scanResult.data()
     };
   } catch (error) {
-    console.log("Error getting data", error);
+    throw new Error(`Error getting document, ${error}`)
   }
 }
 
 export const createSubmittedFile = async payload => {
   if (!payload) return;
 
-  const submittedFileRef = db.doc(`scan-results/${payload.scanId}`);
+  const submittedFileRef = db.doc(`submitted-files/${payload.scanId}`);
+
+  const studentPreviousSubmission = await db
+      .collection("submitted-files")
+      .where('matricNo', "==", payload.matricNo)
+      .where("courseCode", "==", payload.courseCode)
+      .get();
+
+  if (!studentPreviousSubmission.empty) {
+    throw new Error("You can only submit once!")
+  }
+
+  try {
+    await submittedFileRef.set(payload);
+  } catch (error) {
+    throw new Error(`Error creating document, ${error}`)
+  }
+}
+
+export const updateSubmittedFile = async (payload) => {
+  if (!payload) return;
+
+  const submittedFileRef = db.doc(`submitted-files/${payload.scanId}`);
   const submittedFile = await submittedFileRef.get();
 
-  if (!submittedFile.exists) {
+  if (submittedFile.exists) {
     try {
-      await submittedFileRef.set(payload);
+      await submittedFileRef.update(payload);
     } catch (error) {
-      console.log("Error creating document", error);
+      throw new Error(`Error updating document, ${error}`)
     }
+  } else {
+    throw new Error(`File with ScanId not found`)
+  }
+}
+
+export const getAllSubmittedFiles = async (filter, value) => {
+  let submittedFiles = []
+
+  try {
+    await db.collection("submitted-files").where(filter, "==", value)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          submittedFiles.push(doc.data())
+          });
+      });
+    
+    return submittedFiles;
+  } catch (error) {
+    throw new Error(`Error creating document, ${error}`)
   }
 }
 
@@ -146,7 +192,7 @@ export const loadUserFile = async file => {
     return downloadUrl;
 
   } catch (error) {
-    console.log("Error happened with ", error);
+    throw new Error(`Error happened with, ${error}`)
   }
 }
 
@@ -158,7 +204,6 @@ export const unloadUserFile = async filePath => {
     await fileRef.delete();
     return true;
   } catch (error) {
-    console.log("Error with", error);
-    return false;
+    throw new Error(`Error happened with, ${error}`)
   }
 }

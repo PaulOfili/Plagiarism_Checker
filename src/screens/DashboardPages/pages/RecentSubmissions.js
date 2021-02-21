@@ -1,66 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { Table, Tag, Input, Select } from 'antd';
-import ConfirmModalComponent from '../../../components/ConfirmModalComponent';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
-
+import { getAllSubmittedFiles } from "../../../config/Firebase/firebase"
 const { Search } = Input;
 const { Option } = Select;
 
-const data = [
-  {
-    key: '1443443',
-    name: 'John Brown',
-    date: moment().format('MMM Do, YYYY'),
-    similarity_score: 32,
-    status: 'fail',
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '4343435',
-    name: 'Jim Green',
-    date: moment().format('MMM Do, YYYY'),
-    similarity_score: 42,
-    status: 'approved',
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '355545',
-    name: 'Joe Black',
-    date: moment().format('MMM Do, YYYY'),
-    similarity_score: 32,
-    status: 'approved',
-    address: 'Sidney No. 1 Lake Park',
-  }
-];
-
 const colorMapping = {
-  approved: 'green',
-  fail: 'red'
+  graded: 'green',
+  pending: 'blue'
 }
 
+const parseResult = (item) => {
+  return {
+    key: item.scanId,
+    assignmentName: item.assignmentName,
+    scanId: item.scanId,
+    courseCode: item.courseCode.toUpperCase(),
+    timeSubmitted: item.timeSubmitted,
+    status: item.status,
+    similarityScore: item.similarityScore + " %",
+    fileUrl: item.fileUrl
+  }
+}
 
 function RecentSubmissions() {        
 
+  const userId = useSelector(store => store.auth.userData.uid);
 
-  const assignRequests = () => {
-     //DO SOMETHING LATER
-  };
+  const [submittedFiles, setSubmittedFiles] = useState([]);
+
+  useEffect(() => {
+      const getAllSubmittedFilesForUser = async (filter, value) => {
+          const response = await getAllSubmittedFiles(filter, value);
+          const reformattedScannedResults = response.map(parseResult)
+          setSubmittedFiles(reformattedScannedResults) 
+      }
+      getAllSubmittedFilesForUser("userId", userId);
+  }, [userId])
 
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      render: text => <Link to="">{text}</Link>,
+      title: 'Assignment Name',
+      dataIndex: 'assignmentName',
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
+      title: 'Course Code',
+      dataIndex: 'courseCode',
+    },
+    {
+      title: 'Scan ID',
+      dataIndex: 'scanId',
+      render: scanId => <Link to={`/dashboard/scan/${scanId}/results`}>{scanId}</Link>
     },
     {
       title: 'Similarity Score',
-      dataIndex: 'similarity_score',
+      dataIndex: 'similarityScore',
     },
     {
       title: 'Status',
@@ -74,11 +70,17 @@ function RecentSubmissions() {
       ),
     },
     {
+      title: 'Time Submitted',
+      dataIndex: 'timeSubmitted',
+    },
+    {
       title: 'Action',
       key: 'action',
-      render: () => (
-        <ConfirmModalComponent iconType="delete" performAction={assignRequests}/>
-      ),
+      render: (_, item) => (
+        <div>
+          <a href={item.fileUrl}>View document</a>
+        </div>
+        ),
     },
   ];
 
@@ -112,7 +114,7 @@ function RecentSubmissions() {
             </Select>
           </div>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={submittedFiles} />
       </>
       
   )

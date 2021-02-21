@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 
 function MenuItemComponent({ active, icon_type, url, title, ...otherProps }) {
-
     return (
         <Link to={`/dashboard/${url}`}>
             <Row className={`menu-item__container ${active && "menu-item__active-container"}`} vertical="center" {...otherProps}>

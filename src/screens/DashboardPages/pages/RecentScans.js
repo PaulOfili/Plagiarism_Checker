@@ -45,7 +45,6 @@ function RecentScans() {
       const getAllScannedResultsForUser = async userId => {
           const response = await getAllScanResults(userId);
           const reformattedScannedResults = response.map(parseResult)
-          console.log(reformattedScannedResults)
           setScannedResults(reformattedScannedResults) 
       }
       getAllScannedResultsForUser(userId);
@@ -55,7 +54,7 @@ function RecentScans() {
     {
       title: 'Scan ID',
       dataIndex: 'scanId',
-      render: text => <Link to={`/dashboard/scan/${text}/results`}>{text}</Link>,
+      render: scanId => <Link to={`/dashboard/scan/${scanId}/results`}>{scanId}</Link>
     },
     {
       title: 'Course code',
@@ -87,6 +86,7 @@ function RecentScans() {
     {
       title: 'Submitted?',
       dataIndex: 'isSubmitted',
+      render: isSubmitted => (isSubmitted === true) ? "YES" : "NO"
     },
     {
       title: 'Action',

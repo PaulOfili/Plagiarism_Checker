@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
@@ -32,23 +32,34 @@ function Dashboard({location, history}) {
     useEffect(() => {
         const socket = socketIOClient(process.env.REACT_APP_COPYLEAKS_LISTENER);
         socket.on("copyleaks", async data => {
-          console.log(data)
           if(userId === data.developerPayload){
             //   TODO Remove and place this in node listener for copyleaks 
             // so that it is certain we save the result even if the user closes the web app
-            await updateScanResult(data)
-
-            notification.info({
-                message: `Scan results for submitted document ready`,
-                description:
-                    'Please click on the card to access the results.',
-                onClick: () => {
-                    history.push(`/dashboard/scan/${data.scanId}/results`)
-                    notification.close(data.scanId)
-                },
-                key: data.scanId,
-                className: "scan-results-notification",
-            });
+            try {
+                await updateScanResult(data)
+                notification.info({
+                    message: `Scan results for submitted document ready.`,
+                    description:
+                        'Please click on the card to access the results.',
+                    onClick: () => {
+                        history.push(`/dashboard/scan/${data.scanId}/results`)
+                        notification.close(data.scanId)
+                    },
+                    key: data.scanId,
+                    className: "scan-results-notification",
+                });
+            } catch (error) {
+                notification.error({
+                    message: `Error processing document.`,
+                    description:
+                        'Please try again later.',
+                    onClick: () => {
+                        notification.close(data.scanId)
+                    },
+                    key: data.scanId
+                });
+            }
+            
           }
         })
     }, [history, userId])
@@ -58,13 +69,11 @@ function Dashboard({location, history}) {
     
     const currentElement = (pathMapping[last_entry]) ? pathMapping[last_entry] : {header: 'Overview', sidebar: 'Overview'}
 
-    const [selectedItem, setSelectedItem] = useState(currentElement.sidebar);
     const isLoggedIn = useSelector((store) => store.auth.isLoggedIn);
-    
 
     return (
         <Row className="app-container">
-            <SidebarComponent selectedItem={selectedItem} onChange={(selectedItem) => setSelectedItem(selectedItem)} />
+            <SidebarComponent selectedItem={currentElement.sidebar} />
             <Column flexGrow={1} className="app-main-block">
                 <DashboardHeader title={currentElement.header} isLoggedIn={isLoggedIn}/>
                 <div className="app-content">

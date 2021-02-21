@@ -8,30 +8,34 @@ import {
   FormGroup,
   Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
   InputGroup,
   Row,
   Col,
   Alert
 } from "reactstrap";
-import { Radio, Button } from 'antd';
+import { Radio, Button, Select, message } from 'antd';
 import { auth, createUserDocument } from '../../../../config/Firebase/firebase';
+import { lecturer_courses } from "../../../../config/constants"
 import { loginUser } from '../../../../store/actions/auth';
 import zxcvbn from 'zxcvbn';
 import PasswordStrengthComponent from "../../../../components/PasswordStrengthCheckerComponent";
+
+const { Option } = Select;
 
 function SignUp() {
 
   const actionDispatch = useDispatch();
   const loginUserDispatch = useCallback((data) => actionDispatch(loginUser(data)), [actionDispatch]);
 
-  const [ username, setUsername ] = useState('');
+  const [ firstname, setFirstname ] = useState('');
+  const [ lastname, setLastname ] = useState('');
+  const [ matricNo, setMatricNo ] = useState('')
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ passwordStrength, setPasswordStrength ] = useState(0);
   const [ confirmPassword, setConfirmPassword ] = useState('');
   const [ accountType, setAccountType ] = useState('student');
+  const [ courses, setCourses ] = useState([]);
   const [ error, setError ] = useState(null)
   const [ loading, setLoading ] = useState(false);
 
@@ -39,8 +43,12 @@ function SignUp() {
     const { name, value } = event.target;
     setError(null);
 
-    if (name === 'username') {
-      setUsername(value);
+    if (name === 'firstname') {
+      setFirstname(value);
+    } else if(name === 'lastname') {
+      setLastname(value);
+    } else if(name === 'matricNo') {
+      setMatricNo(value);
     } else if(name === 'email') {
       setEmail(value);
     } else if (name === 'password') {
@@ -50,6 +58,10 @@ function SignUp() {
       setConfirmPassword(value);
     }
   };
+
+  const onMultipleChangeHandler = (value) => {
+    setCourses(value)
+  }
 
   const onRadioChangeHandler = (event) => {
     const { value } = event.target;
@@ -66,17 +78,22 @@ function SignUp() {
     
     if (validateCredentials()) {
       setLoading(true);
-
       try {
         const { user } = await auth.createUserWithEmailAndPassword(email, password);
-        const userData = await createUserDocument(user, {accountType, username});
-        setLoading(false);
+        const userData = await createUserDocument(user, {
+          accountType, 
+          firstname, 
+          lastname, 
+          matricNo,
+          courses
+        });
         loginUserDispatch(userData);
       }
       catch(error) {
-        console.log(error)
-        setLoading(false);
+        message.error("An error occured. Please try again later.")
         setError(error.message)
+      } finally {
+        setLoading(false);
       }
     } else {
       setError('Password Mismatch');
@@ -99,42 +116,56 @@ function SignUp() {
               }
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-hat-3" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input name="username" value={username} onChange={onChangeHandler} placeholder="Firstname" type="text" required />
+                  <Input name="firstname" value={firstname} onChange={onChangeHandler} placeholder="Firstname" type="text" required />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-email-83" />
-                    </InputGroupText>
-                  </InputGroupAddon>
+                  <Input name="lastname" value={lastname} onChange={onChangeHandler} placeholder="Lastname" type="text" required />
+                </InputGroup>
+              </FormGroup>
+              {
+                accountType === "student" && (
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <Input name="matricNo" value={matricNo} onChange={onChangeHandler} placeholder="Matric Number" type="text" required />
+                  </InputGroup>
+                </FormGroup>
+                )
+              }  
+              <FormGroup>
+                <InputGroup className="input-group-alternative mb-3">
                   <Input name="email" value={email} onChange={onChangeHandler} placeholder="Email" type="email" autoComplete="new-email"/>
                 </InputGroup>
               </FormGroup>
+              {
+                accountType === "lecturer" && (
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <Select
+                      mode="multiple"
+                      size="large"
+                      style={{ width: '100%', minHeight: '2.8rem' }}
+                      placeholder="Please select your courses"
+                      value={courses}
+                      onChange={onMultipleChangeHandler}
+                    >
+                      {lecturer_courses.map(course => (
+                        <Option key={course.key}>{course.value}</Option>
+                      ))}
+                    </Select>
+                  </InputGroup>
+                </FormGroup>
+                )
+              }
               <FormGroup>
                 <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input name="password" value={password} onChange={onChangeHandler} placeholder="Enter Password" type="password" autoComplete="new-password"/>
                 </InputGroup>
                 <PasswordStrengthComponent passwordStrength={passwordStrength} password={password}/>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input name="confirmPassword" value={confirmPassword} onChange={onChangeHandler} placeholder="Confirm Password" type="password" autoComplete="new-password"/>
                 </InputGroup>
               </FormGroup>

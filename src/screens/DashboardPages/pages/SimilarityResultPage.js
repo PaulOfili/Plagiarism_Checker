@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Progress, Button, Spin } from 'antd';
+import { useSelector } from "react-redux";
+import { Card, Progress, Button, Spin, message } from 'antd';
 import moment from "moment";
-import { getScanResult } from "../../../config/Firebase/firebase"
+import { getScanResult, createSubmittedFile, updateScanResult } from "../../../config/Firebase/firebase"
 
-function SimilarityResultPage({location}) {    
+function SimilarityResultPage({location, history}) {    
 
-    // const getResultForScanId = useCallback((data) => getScanResults(data), []);
+    const userData = useSelector(store => store.auth.userData);
     const [scannedResult, setScannedResult] = useState(null);
+    const [ isSubmitting, setSubmitting ] = useState(false)
+
 
     useEffect(() => {
         const getResultForScanId = async scanId => {
@@ -17,6 +20,44 @@ function SimilarityResultPage({location}) {
         let scanId = pathNameArray[pathNameArray.length-2];
         getResultForScanId(scanId);
     }, [location.pathname])
+
+    const handleSubmit = async () => {
+        /**
+         * full name, matric, assignemt name, score, coursecode,fileurl, scanid, grade
+         */
+        setSubmitting(true);
+        try {
+            const payload = {
+                studentName: `${userData.firstname} ${userData.lastname}`,
+                matricNo: userData.matricNo,
+                assignmentName: scannedResult.assignmentName,
+                similarityScore: scannedResult.results.score.aggregatedScore,
+                courseCode: scannedResult.courseCode,
+                fileUrl: scannedResult.fileUrl,
+                scanId: scannedResult.scanId,
+                timeSubmitted: moment().format('MMM Do, YYYY'),
+                status: "pending",
+                userId: userData.uid,
+            }
+
+            const updateSubmittedStatePayload = {
+                scanId: scannedResult.scanId,
+                isSubmitted: true
+            }
+            await createSubmittedFile(payload);
+            await updateScanResult(updateSubmittedStatePayload);
+            message.success("Successfully submitted. Redirecting to submission list in 3 seconds.")
+            setTimeout(() => {
+                history.push("/dashboard/recent-submissions");
+            }, 3000);
+            
+
+        } catch (error) {
+            message.error(error.message)
+        } finally {
+            setSubmitting(false)
+        }
+    }
 
     if (scannedResult === null) {
         return <Spin size="large"/>
@@ -55,8 +96,8 @@ function SimilarityResultPage({location}) {
                             // disabled={(fileList.length === 0) ? 1: 0}
                             size="large"
                             type="primary"
-                            // onClick={handleScan}
-                            // loading={submitting}
+                            onClick={handleSubmit}
+                            loading={isSubmitting}
                         >
                             Submit Assignment
                         </Button>
@@ -69,16 +110,11 @@ function SimilarityResultPage({location}) {
                             <div key={webpage.id} className="similarity-result-website-card">
                                 <Card title={webpage.title} style={{ width: 300 }}>
                                     <p>{webpage.introduction}</p>
-                                    <p>{webpage.matchedWords}</p>
+                                    {/* <p>{webpage.matchedWords}</p> */}
                                 </Card>
                             </div>
                         ))
                     }
-                    <div className="similarity-result-website-card">
-                        <Card title="This is a title 1" style={{ width: 300 }}>
-                            <p>Card content</p>
-                        </Card>
-                    </div>
                 </div>
             </div>
 

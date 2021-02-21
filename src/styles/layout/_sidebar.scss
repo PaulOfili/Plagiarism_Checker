@@ -67,7 +67,8 @@
     background-color: $primary-sidebar-background;
     width: 18.75rem;
     padding-top: 2rem;
-    height: calc(100%)
+    height: calc(100%);
+    z-index: 900;
 }
 
 .sidebar__main-container {

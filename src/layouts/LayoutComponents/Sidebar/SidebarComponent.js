@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Column, Row } from 'simple-flexbox';
 import MenuItemComponent from './MenuItemComponent';
 import {Icon} from 'antd';
-import PropTypes from 'prop-types';
 import all_routes from '../../../config/routes';
 import { Link } from 'react-router-dom';
 
@@ -36,15 +35,14 @@ const styles = {
 
 }
 
-function SidebarComponent({onChange, selectedItem}) {
+function SidebarComponent({selectedItem}) {
 
     const userData = useSelector((store) => store.auth.userData)
 
     const [expanded, setExpanded] = useState(false);
 
     const onItemClicked = (item) => {
-        setExpanded(false)
-        return onChange(item);
+        setExpanded(false);
     }
 
     const checkIfMobile = () => window.innerWidth <= 768;
@@ -75,7 +73,6 @@ function SidebarComponent({onChange, selectedItem}) {
 
     const route_type = userData.accountType === 'student' ? 'student_routes' : 'lecturer_routes';
     const current_menu = all_routes[route_type];
-
     return (
         <div style={{ position: 'relative' }}>
             <Row className="sidebar__main-container" breakpoints={{ 768: rowBreakpoint }}>
@@ -109,8 +106,6 @@ function SidebarComponent({onChange, selectedItem}) {
 };
 
 SidebarComponent.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    selectedItem: PropTypes.string.isRequired
 }
 
 export default SidebarComponent;

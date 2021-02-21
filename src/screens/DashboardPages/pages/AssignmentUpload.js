@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
-import { Upload, Icon, Select, Button } from 'antd';
+import { Upload, Icon, Select, Button, Input, message } from 'antd';
 import { loadUserFile, createScanResult  } from "../../../config/Firebase/firebase";
+import { lecturer_courses } from "../../../config/constants"
 import { getSimilarityResult } from "../../../services/checkSimilarityResult"
 import { nanoid } from 'nanoid'
 import moment from "moment";
@@ -15,15 +16,22 @@ const { Option } = Select;
 function AssignmentUpload() { 
 
     const userId = useSelector(store => store.auth.userData.uid)
-    const [fileList, setFileList] = useState([])
-    const [scanning, /*setScanning*/] = useState(false)
+    const [ fileList, setFileList ] = useState([])
+    const [ courseCode, setCourseCode ] = useState("eeg507")
+    const [ assignmentName, setAssignmentName ] = useState("");
+    const [ scanning, setScanning ] = useState(false)
 
     const handleChange = (value) => {
+        setCourseCode(value)
+    }
+
+    const handleTextChange = (event) => {
+        const {value} = event.target
+        setAssignmentName(value);
     }
 
     const handleScan = async () => {
-        // TODO Complete handle Scan
-        // TODO Add the field for name of the assignment which is shown on recent scans page
+        setScanning(true)
         try {
             const currentFile = fileList[0]
             const downloadUrl = await loadUserFile(currentFile);
@@ -31,9 +39,10 @@ function AssignmentUpload() {
             const payload = {
                 scanId: uniqueId,
                 userId,
-                courseCode: "eeg",
+                assignmentName,
+                courseCode,
                 fileUrl: downloadUrl,
-                isSubmitted: "NO",
+                isSubmitted: false,
                 scanStartTime: moment().format('MMM Do, YYYY')
             }
             await createScanResult(payload);
@@ -44,14 +53,14 @@ function AssignmentUpload() {
                 userId
             }
 
-            //TODO Display this
             const result = await getSimilarityResult(requestBody);
-            console.log(result)
-            // await unloadUserFile(downloadUrl);
+            message.success(result.message)
 
         } catch (error) {
-            console.log(error)
-        }  
+            message.error(error.message)
+        } finally {
+            setScanning(false)
+        }
     }
 
     const draggerProps = {
@@ -72,15 +81,25 @@ function AssignmentUpload() {
             <div className='select-course'>
                 <p>Select Course</p>
                 <Select 
-                    defaultValue="name" 
                     onChange={handleChange} 
+                    value={courseCode}
                     style={{ width: 200 }}
                     size='large'>
-                    <Option value="name">Name</Option>
-                    <Option value="newest">Newest first</Option>
-                    <Option value="similarity" >Similarity score</Option>
-                    <Option value="status">Status</Option>
+                    {lecturer_courses.map(course => 
+                        (
+                            <Option key={course.key}>{course.value}</Option>
+                        )
+                    )}
                 </Select>
+                <div className='assignment-name'>
+                    <p>Enter Assignment Name</p>
+                    <Input 
+                        onChange={handleTextChange} 
+                        value={assignmentName}
+                        style={{ width: 400 }}
+                        size='large'>
+                    </Input>
+                </div>
             </div>
             <div className='upload-file'>
                 <div className="upload-file-dragger">
@@ -93,8 +112,7 @@ function AssignmentUpload() {
                 </div>
                 <div className="scan-button-container">
                     <Button
-                        // TODO Cant submit without slecting one document, refactor
-                        disabled={(fileList.length === 0) ? 1: 0}
+                        disabled={(fileList.length === 0 || assignmentName === "") ? 1: 0}
                         size="large"
                         type="primary"
                         onClick={handleScan}
