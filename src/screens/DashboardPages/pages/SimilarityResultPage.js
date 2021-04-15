@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
-import { Card, Progress, Button, Spin, message } from 'antd';
+import { Progress, Button, Spin, message } from 'antd';
 import moment from "moment";
 import { getScanResult, createSubmittedFile, updateScanResult } from "../../../config/Firebase/firebase"
+import SimilarCardComponent from "../../../components/SimilarCardComponent";
 
 function SimilarityResultPage({location, history}) {    
 
@@ -86,14 +87,13 @@ function SimilarityResultPage({location, history}) {
                         type="circle" 
                         strokeWidth={8}
                         width={240}
-                        // strokeColor="#F3E197"
                         status="normal"
                         percent={scannedResult.results.score.aggregatedScore} 
                     />
                     <div >
                         <Button
                         className="submit-button-container"
-                            // disabled={(fileList.length === 0) ? 1: 0}
+                            disabled={scannedResult.results.score.aggregatedScore > 15}
                             size="large"
                             type="primary"
                             onClick={handleSubmit}
@@ -101,17 +101,25 @@ function SimilarityResultPage({location, history}) {
                         >
                             Submit Assignment
                         </Button>
-                </div>
+                    </div>
+                    {
+                    scannedResult.results.score.aggregatedScore > 15 && (
+                        <p className="warning-text">Your plagiarism score is too high. Please modify your assignment and scan again.</p>
+                    )
+                    }
                 </div>
                 <div className="similarity-result-websites">
                     <h1>Online sources referenced</h1>
                     {
-                        scannedResult.results.internet.map(webpage => (
+                        scannedResult.results.internet.slice(0,3).map(webpage => (
                             <div key={webpage.id} className="similarity-result-website-card">
-                                <Card title={webpage.title} style={{ width: 300 }}>
-                                    <p>{webpage.introduction}</p>
-                                    {/* <p>{webpage.matchedWords}</p> */}
-                                </Card>
+                                <a href={webpage.url}>
+                                    <SimilarCardComponent 
+                                        title={webpage.title}
+                                        content={webpage.introduction}
+                                        matchedWordsCount={webpage.matchedWords}
+                                    />
+                                </a>
                             </div>
                         ))
                     }

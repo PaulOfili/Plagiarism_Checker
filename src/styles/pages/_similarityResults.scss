@@ -18,7 +18,7 @@
     border: solid 1px #e8e8e8;
     padding: 1.6rem 2rem;
     height: 11.2rem;
-    margin-bottom: 4rem;
+    margin-bottom: 3.5rem;
     justify-content: space-between;
 
     p {
@@ -36,6 +36,7 @@
 
 .similarity-result-score{
     width: 70%;
+    height: 58vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,6 +48,10 @@
         
     }
 
+    .warning-text {
+        color: red;
+    }
+
 }
 
 .similarity-result-websites {
@@ -55,10 +60,15 @@
     padding: 0rem 0  0 2.5rem;
 
     h1 {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
 }
 
 .similarity-result-website-card{
     padding-bottom: 1rem;
+
+    a, a:hover, a:link, a:visited {
+        color: unset;
+    }
+
 }
