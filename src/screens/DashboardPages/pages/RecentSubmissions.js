@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Table, Tag, Input, Select } from 'antd';
-import { getAllSubmittedFiles } from "../../../config/Firebase/firebase"
+import { Table, Tag, Input, Select, message } from 'antd';
+import { getAllSubmittedFiles } from "../../../config/Firebase/firebase";
+import moment from "moment";
+
 const { Search } = Input;
 const { Option } = Select;
 
@@ -17,7 +19,7 @@ const parseResult = (item) => {
     assignmentName: item.assignmentName,
     scanId: item.scanId,
     courseCode: item.courseCode.toUpperCase(),
-    timeSubmitted: item.timeSubmitted,
+    timeSubmitted: moment(item.timeSubmitted).format('LLL'),
     status: item.status,
     similarityScore: item.similarityScore + " %",
     fileUrl: item.fileUrl
@@ -32,9 +34,13 @@ function RecentSubmissions() {
 
   useEffect(() => {
       const getAllSubmittedFilesForUser = async (filter, value) => {
+        try{
           const response = await getAllSubmittedFiles(filter, value);
           const reformattedScannedResults = response.map(parseResult)
           setSubmittedFiles(reformattedScannedResults) 
+        } catch (error) {
+          message.error(error.message);
+        }
       }
       getAllSubmittedFilesForUser("userId", userId);
   }, [userId])
@@ -78,7 +84,7 @@ function RecentSubmissions() {
       key: 'action',
       render: (_, item) => (
         <div>
-          <a href={item.fileUrl}>View document</a>
+          <a href={item.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
         </div>
         ),
     },

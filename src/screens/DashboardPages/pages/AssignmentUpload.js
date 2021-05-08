@@ -5,7 +5,6 @@ import { loadUserFile, createScanResult  } from "../../../config/Firebase/fireba
 import { lecturer_courses } from "../../../config/constants"
 import { getSimilarityResult } from "../../../services/checkSimilarityResult"
 import { nanoid } from 'nanoid'
-import moment from "moment";
 
 const { Dragger } = Upload;
 
@@ -43,7 +42,7 @@ function AssignmentUpload() {
                 courseCode,
                 fileUrl: downloadUrl,
                 isSubmitted: false,
-                scanStartTime: moment().format('MMM Do, YYYY')
+                scanStartTime: new Date().getTime()
             }
             await createScanResult(payload);
 

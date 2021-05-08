@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { Table, Input, Select, message } from 'antd';
 import { getAllSubmittedFiles, updateSubmittedFile } from "../../../config/Firebase/firebase"
+import moment from "moment";
+
 const { Search } = Input;
 const { Option } = Select;
 
@@ -13,7 +15,7 @@ const parseResult = (item) => {
     assignmentName: item.assignmentName,
     scanId: item.scanId,
     courseCode: item.courseCode.toUpperCase(),
-    timeSubmitted: item.timeSubmitted,
+    timeSubmitted: moment(item.timeSubmitted).format('LLL'),
     status: item.status,
     similarityScore: item.similarityScore + " %",
     fileUrl: item.fileUrl
@@ -28,6 +30,7 @@ function StudentSubmissions() {
 
   useEffect(() => {
       const getAllSubmittedFilesForUser = async (filter, value) => {
+        try{
           const response = await getAllSubmittedFiles(filter, value);
           const reformattedScannedResults = response.map(parseResult)
           const rowKeys = reformattedScannedResults
@@ -36,6 +39,10 @@ function StudentSubmissions() {
 
           setSubmittedFiles(reformattedScannedResults) 
           setSelectedRowKeys(rowKeys);
+        } catch (error) {
+          message.error(error.message);
+        }
+          
       }
       getAllSubmittedFilesForUser("courseCode", lecturerData.lecturer_courses[0]);
   }, [lecturerData.lecturer_courses])
@@ -88,7 +95,7 @@ function StudentSubmissions() {
       key: 'action',
       render: (_, item) => (
         <div>
-          <a href={item.fileUrl}>View document</a>
+          <a href={item.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
 
         </div>
         ),

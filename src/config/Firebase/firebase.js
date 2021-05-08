@@ -96,6 +96,7 @@ export const getAllScanResults = async userId => {
   let scannedResults = []
   try {
     await db.collection("scan-results").where("userId", "==", userId)
+      .orderBy('scanStartTime', 'desc')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -168,6 +169,7 @@ export const getAllSubmittedFiles = async (filter, value) => {
 
   try {
     await db.collection("submitted-files").where(filter, "==", value)
+      .orderBy('timeSubmitted', 'desc')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

@@ -36,7 +36,7 @@ function Dashboard({location, history}) {
             //   TODO Remove and place this in node listener for copyleaks 
             // so that it is certain we save the result even if the user closes the web app
             try {
-                await updateScanResult(data)
+                await updateScanResult({...data, scanFinishTime: new Date().getTime()})
                 notification.info({
                     message: `Scan results for submitted document ready.`,
                     description:

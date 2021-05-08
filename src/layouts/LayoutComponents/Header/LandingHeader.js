@@ -14,7 +14,7 @@ function LandingHeader() {
             style={{
                 minHeight: "100vh",
                 backgroundImage:
-                "url(" + require("../../../assets/img/landing-page-background.jpg") + ")",
+                "url(" + require("../../../assets/img/plagiarism-checker.png") + ")",
                 backgroundSize: "cover",
                 backgroundPosition: "center top"
             }}
@@ -29,7 +29,7 @@ function LandingHeader() {
                         <Col lg="8" md="10" className="offset-lg-2 offset-md-1">
                             <h1 className="display-1 text-white">The Online Plagiarism Checker</h1>
                             <p className=" display-5 text-white mt-0 mb-5">
-                                An easy intuitive tool to fight against plagiarism thereby enabling students learn effectively.
+                                An intuitive tool to detect plagiarism, enabling students learn effectively.
                             </p>
 
                             <Link to="/auth" className="text-white"> 

@@ -23,7 +23,7 @@ function AuthNavbar() {
         >
           <Container className="px-4">
             <NavbarBrand to="/" tag={Link}>
-                Plagiarism Checker
+                Plagiarism Checker by  PAUL OFILI
             </NavbarBrand>
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />

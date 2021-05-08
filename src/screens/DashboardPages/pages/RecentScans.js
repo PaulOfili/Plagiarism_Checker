@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
-import { Table, Tag, Input, Select } from 'antd';
+import { Table, Tag, Input, Select, message } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { getAllScanResults } from "../../../config/Firebase/firebase"
@@ -19,9 +19,9 @@ const parseResult = (item) => {
     key: item.scanId,
     scanId: item.scanId,
     courseCode: item.courseCode.toUpperCase(),
-    scanStartTime: moment().format('MMM Do, YYYY'),
-    scanFinishTime: (item.scannedDocument && item.scannedDocument.creationTime) 
-    ?  moment(item.scannedDocument.creationTime).format('MMM Do, YYYY')
+    scanStartTime: moment(item.scanStartTime).format('LLL'),
+    scanFinishTime: (item.scanFinishTime) 
+    ?  moment(item.scanFinishTime).format('LLL')
     : "Pending",
     status: (item.status) 
     ? item.status
@@ -43,9 +43,13 @@ function RecentScans() {
 
   useEffect(() => {
       const getAllScannedResultsForUser = async userId => {
+        try{
           const response = await getAllScanResults(userId);
           const reformattedScannedResults = response.map(parseResult)
           setScannedResults(reformattedScannedResults) 
+        } catch (error) {
+          message.error(error.message);
+        }
       }
       getAllScannedResultsForUser(userId);
   }, [userId])
@@ -54,7 +58,7 @@ function RecentScans() {
     {
       title: 'Scan ID',
       dataIndex: 'scanId',
-      render: scanId => <Link to={`/dashboard/scan/${scanId}/results`}>{scanId}</Link>
+      render: (scanId, scan) => (scan?.status === "completed") ? <Link to={`/dashboard/scan/${scanId}/results`}>{scanId}</Link> : <p>{scanId}</p>
     },
     {
       title: 'Course code',
@@ -91,8 +95,8 @@ function RecentScans() {
     {
       title: 'Action',
       key: 'action',
-      render: (_, item) => (
-        <a href={item.fileUrl}>View document</a>
+      render: (_, scan) => (
+        <a href={scan.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
       ),
     },
   ];

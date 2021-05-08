@@ -36,7 +36,7 @@ function SimilarityResultPage({location, history}) {
                 courseCode: scannedResult.courseCode,
                 fileUrl: scannedResult.fileUrl,
                 scanId: scannedResult.scanId,
-                timeSubmitted: moment().format('MMM Do, YYYY'),
+                timeSubmitted: new Date().getTime(),
                 status: "pending",
                 userId: userData.uid,
             }
@@ -77,7 +77,7 @@ function SimilarityResultPage({location, history}) {
                 </div>
                 <div className="similarity-result__metrics-box" style={{background: "#fff"}}>
                     <h2>Time Created</h2>
-                    <p>{moment(scannedResult.scannedDocument.creationTime).format('MMM Do, YYYY')}</p>
+                    <p>{moment(scannedResult.scanFinishTime).format('LLL')}</p>
                 </div>
             </div>
             <div className="similarity-result-score-container">
@@ -103,7 +103,7 @@ function SimilarityResultPage({location, history}) {
                         </Button>
                     </div>
                     {
-                    scannedResult.results.score.aggregatedScore > 15 && (
+                    scannedResult.results.score.aggregatedScore > 50 && (
                         <p className="warning-text">Your plagiarism score is too high. Please modify your assignment and scan again.</p>
                     )
                     }
@@ -113,7 +113,7 @@ function SimilarityResultPage({location, history}) {
                     {
                         scannedResult.results.internet.slice(0,3).map(webpage => (
                             <div key={webpage.id} className="similarity-result-website-card">
-                                <a href={webpage.url}>
+                                <a href={webpage.url} rel="noopener noreferrer" target="_blank">
                                     <SimilarCardComponent 
                                         title={webpage.title}
                                         content={webpage.introduction}
