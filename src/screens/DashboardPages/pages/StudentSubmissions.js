@@ -18,7 +18,8 @@ const parseResult = (item) => {
     timeSubmitted: moment(item.timeSubmitted).format('LLL'),
     status: item.status,
     similarityScore: item.similarityScore + " %",
-    fileUrl: item.fileUrl
+    fileUrl: item.fileUrl,
+    assignmentScore: item.assignmentScore
   }
 }
 
@@ -55,7 +56,8 @@ function StudentSubmissions() {
     onSelect: async (record, selected) => {
       const updateGradedStatus = {
         scanId: record.key,
-        status: (selected) ? "graded" : "pending"
+        status: (selected) ? "graded" : "pending",
+        assignmentScore: (selected) ? record.assignmentScore : ""
       }
       try {
         await updateSubmittedFile(updateGradedStatus);
@@ -91,12 +93,24 @@ function StudentSubmissions() {
       dataIndex: 'timeSubmitted',
     },
     {
+      title: 'Assignment Score',
+      dataIndex: 'assignmentScore',
+      render: (score, submission) => (
+        <input type="number" 
+              defaultValue={score} 
+              max="100"
+              data-key={submission.key}
+              disabled={selectedRowKeys.includes(submission.key)} 
+              style={{width:"60px", borderWidth: "1px"}} 
+              onChange={handleAssignmentScoreChange}/>
+      )
+    },
+    {
       title: 'Action',
       key: 'action',
-      render: (_, item) => (
+      render: (_, submission) => (
         <div>
-          <a href={item.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
-
+          <a href={submission.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
         </div>
         ),
     },
@@ -114,6 +128,15 @@ function StudentSubmissions() {
       message.error("An error occured. Please try again.")
     } 
   }
+
+  const handleAssignmentScoreChange = event => {
+    const value = event.target.value;
+    const inputKey = event.target.dataset["key"];
+
+    const newSubmittedFiles = submittedFiles.map(item => (item.key !== inputKey) ? item : {...item, assignmentScore: value});
+    setSubmittedFiles(newSubmittedFiles);
+  }
+
 
   return (
       <>

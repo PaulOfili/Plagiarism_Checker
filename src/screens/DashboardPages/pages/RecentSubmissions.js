@@ -22,7 +22,8 @@ const parseResult = (item) => {
     timeSubmitted: moment(item.timeSubmitted).format('LLL'),
     status: item.status,
     similarityScore: item.similarityScore + " %",
-    fileUrl: item.fileUrl
+    fileUrl: item.fileUrl,
+    assignmentScore: item.assignmentScore
   }
 }
 
@@ -78,6 +79,13 @@ function RecentSubmissions() {
     {
       title: 'Time Submitted',
       dataIndex: 'timeSubmitted',
+    },
+    {
+      title: 'Assignment Score',
+      dataIndex: 'assignmentScore',
+      render: (assignmentScore) => (
+        <span>{(assignmentScore !== "" && -100 <= assignmentScore && assignmentScore <= 100) ? assignmentScore : "-"}</span>
+      )
     },
     {
       title: 'Action',
