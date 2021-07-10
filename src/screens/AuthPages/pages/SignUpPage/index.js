@@ -87,13 +87,13 @@ function SignUp() {
           matricNo,
           courses
         });
+        setLoading(false);
         loginUserDispatch(userData);
       }
       catch(error) {
-        message.error("An error occured. Please try again later.")
-        setError(error.message)
-      } finally {
+        message.error("An error occured. Please try again later.");
         setLoading(false);
+        setError(error.message);
       }
     } else {
       setError('Password Mismatch');

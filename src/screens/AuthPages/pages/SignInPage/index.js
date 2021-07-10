@@ -51,14 +51,13 @@ function SignIn() {
       if(!userData) {
         throw new Error("UserData is empty");
       }
+      setLoading(false);
       loginUserDispatch(userData);
     }
     catch(error) {
-      message.error("An error happened. Please try again later.")
-      
-      setError(error.message)
-    } finally {
+      message.error("An error happened. Please try again later.");
       setLoading(false);
+      setError(error.message);
     }
   }
 
