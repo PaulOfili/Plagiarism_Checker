@@ -1,10 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import all_routes from '../../config/routes';
 import { Container, Row, Col } from "reactstrap";
 import AuthNavbar from '../../layouts/LayoutComponents/Navbar/AuthNavbar';
 
 function Auth() {
+    useEffect(() => {
+        document.body.classList.add("bg-default");
+    }, [])
+
+    useEffect(() => {
+        return () => {
+            document.body.classList.remove("bg-default");
+        }
+    }, [])
 
     return (
         <>
