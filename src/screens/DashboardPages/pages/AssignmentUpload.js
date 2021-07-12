@@ -35,6 +35,14 @@ function AssignmentUpload() {
             const currentFile = fileList[0]
             const downloadUrl = await loadUserFile(currentFile);
             const uniqueId = nanoid(10).toLowerCase();
+            
+            const requestBody = {
+                fileUrl: downloadUrl,
+                scanId: uniqueId,
+                userId
+            }
+            const result = await getSimilarityResult(requestBody);
+
             const payload = {
                 scanId: uniqueId,
                 userId,
@@ -46,13 +54,6 @@ function AssignmentUpload() {
             }
             await createScanResult(payload);
 
-            const requestBody = {
-                fileUrl: downloadUrl,
-                scanId: uniqueId,
-                userId
-            }
-
-            const result = await getSimilarityResult(requestBody);
             message.success(result.message)
 
         } catch (error) {
