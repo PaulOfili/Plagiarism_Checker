@@ -7,11 +7,12 @@ function ConfirmComponent({iconType, disabled, title, content, confirmText, perf
 
     function showDeleteConfirm() {
       confirm({
-        title: 'Are you sure delete this task?',
+        title: 'Are you sure you want to delete this item?',
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
         onOk() {
+            performAction()
         },
       });
     }

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SimilarCardComponent = ({title, content, matchedWordsCount}) => {
+const SimilarResultCardComponent = ({title, content, matchedWordsCount}) => {
     return (
         <div className="similar-card">
             <h4 className="similar-card__title">{title.substring(0, 45) + (title.length > 45 ? "...": "")}</h4>
@@ -15,4 +15,4 @@ const SimilarCardComponent = ({title, content, matchedWordsCount}) => {
     )
 }
 
-export default SimilarCardComponent;
+export default SimilarResultCardComponent;

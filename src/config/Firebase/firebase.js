@@ -91,6 +91,16 @@ export const updateScanResult = async (payload) => {
   }
 }
 
+export const deleteScanResult = async scanId => {
+    if (!scanId) return null;
+
+    try {
+        await db.doc(`scan-results/${scanId}`).delete();
+    } catch (error) {
+        throw new Error("Error deleting scan result");
+    }
+}
+
 export const getAllScanResults = async userId => {
   
   let scannedResults = []
@@ -164,9 +174,18 @@ export const updateSubmittedFile = async (payload) => {
   }
 }
 
+export const deleteSubmittedFile = async scanId => {
+    if (!scanId) return null;
+
+    try {
+        await db.doc(`submitted-files/${scanId}`).delete();
+    } catch (error) {
+        throw new Error("Error deleting submitted file");
+    }
+}
+
 export const getAllSubmittedFiles = async (filter, value) => {
   let submittedFiles = []
-
   try {
     await db.collection("submitted-files").where(filter, "==", value)
       .orderBy('timeSubmitted', 'desc')

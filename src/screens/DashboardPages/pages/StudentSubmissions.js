@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useMemo } from 'react';
 import { useSelector } from "react-redux";
 import { Table, Input, Select, message } from 'antd';
-import { getAllSubmittedFiles, updateSubmittedFile } from "../../../config/Firebase/firebase"
+import { getAllSubmittedFiles, updateSubmittedFile, deleteSubmittedFile } from "../../../config/Firebase/firebase"
 import moment from "moment";
+import ConfirmComponent from '../../../components/ConfirmModalComponent';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -29,24 +30,24 @@ function StudentSubmissions() {
   const [ submittedFiles, setSubmittedFiles ] = useState([]);
   const [ selectedRowKeys, setSelectedRowKeys ] = useState([]);
 
-  useEffect(() => {
-      const getAllSubmittedFilesForUser = async (filter, value) => {
-        try{
-          const response = await getAllSubmittedFiles(filter, value);
-          const reformattedScannedResults = response.map(parseResult)
-          const rowKeys = reformattedScannedResults
-            .filter(item => item.status === "graded")
-            .map(item => item.key);
+  const getAllSubmittedFilesForUser = useMemo(() => async (filter, value) => {
+    try{
+      const response = await getAllSubmittedFiles(filter, value);
+      const reformattedSubmittedFiles = response.map(parseResult);
+      const rowKeys = reformattedSubmittedFiles
+        .filter(item => item.status === "graded")
+        .map(item => item.key);
+      setSubmittedFiles(reformattedSubmittedFiles);
+      setSelectedRowKeys(rowKeys);
+    } catch (error) {
+      message.error(error.message);
+    }  
+  }, [])
 
-          setSubmittedFiles(reformattedScannedResults) 
-          setSelectedRowKeys(rowKeys);
-        } catch (error) {
-          message.error(error.message);
-        }
-          
-      }
+  useEffect(() => {
+      
       getAllSubmittedFilesForUser("courseCode", lecturerData.lecturer_courses[0]);
-  }, [lecturerData.lecturer_courses])
+  }, [lecturerData.lecturer_courses, getAllSubmittedFilesForUser])
 
   const rowSelection = {
     selectedRowKeys,
@@ -60,12 +61,27 @@ function StudentSubmissions() {
         assignmentScore: (selected) ? record.assignmentScore : ""
       }
       try {
+        if (selected && (!updateGradedStatus.assignmentScore || updateGradedStatus.assignmentScore === "")) {
+            throw new Error("You forgot to add the score")
+        }
         await updateSubmittedFile(updateGradedStatus);
       } catch (error) {
         message.error(error.message)
       }
     }
   };
+
+  const deleteSelectedSubmittedFile = async (scanId) => {
+    try {
+      await deleteSubmittedFile(scanId);
+      const filteredSubmittedFile = submittedFiles.filter(file => file.scanId !== scanId);
+      const filteredSelectedRowKeys = selectedRowKeys.filter(key => key !== scanId);
+      setSubmittedFiles(filteredSubmittedFile);
+      setSelectedRowKeys(filteredSelectedRowKeys);
+    } catch(error) {
+      message.error("Something went wrong. Please try again");
+    }
+}
 
   const columns = [
     {
@@ -97,36 +113,40 @@ function StudentSubmissions() {
       dataIndex: 'assignmentScore',
       render: (score, submission) => (
         <input type="number" 
-              defaultValue={score} 
-              max="100"
-              data-key={submission.key}
-              disabled={selectedRowKeys.includes(submission.key)} 
-              style={{width:"60px", borderWidth: "1px"}} 
-              onChange={handleAssignmentScoreChange}/>
+            defaultValue={score} 
+            max="100"
+            data-key={submission.key}
+            disabled={selectedRowKeys.includes(submission.key)} 
+            style={{width:"60px", borderWidth: "1px"}} 
+            onChange={handleAssignmentScoreChange}
+        />
       )
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, submission) => (
-        <div>
-          <a href={submission.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
+        <div style={{display: "flex", width: "100%", justifyContent:"space-between"}}>
+            <a href={submission.fileUrl} rel="noopener noreferrer" target="_blank">View document</a>
+            <ConfirmComponent iconType="delete" performAction={() => deleteSelectedSubmittedFile(submission.scanId)}/>
         </div>
-        ),
+     ),
     },
   ];
 
   const handleSearch = (value) => {
+    const filteredSubmittedFiles = submittedFiles.filter((file) => file.matricNo.toLowerCase().startsWith(value.toLowerCase()));
+    setSubmittedFiles(filteredSubmittedFiles);
   }
 
   const handleChange = async value => {
-    try {
-      const response = await getAllSubmittedFiles("courseCode", value)
-      const reformattedScannedResults = response.map(parseResult);
-      setSubmittedFiles(reformattedScannedResults) ;
-    } catch (error) {
-      message.error("An error occured. Please try again.")
-    } 
+    const response = await getAllSubmittedFiles("courseCode", value);
+    const reformattedSubmittedFiles = response.map(parseResult);
+    const rowKeys = reformattedSubmittedFiles
+            .filter(item => item.status === "graded")
+            .map(item => item.key);
+    setSubmittedFiles(reformattedSubmittedFiles);
+    setSelectedRowKeys(rowKeys);
   }
 
   const handleAssignmentScoreChange = event => {
@@ -143,23 +163,13 @@ function StudentSubmissions() {
         <div className='filter-wrapper'>
           <div className='search-filter'>
             <Search
-              placeholder="Search by submission name"
+              placeholder="Search by matric number"
               onSearch={handleSearch}
               style={{height: 67, maxWidth: '20rem'}}
             />
           </div>
           <div className='sort-filter'>
             <p className='sort-filter__title'>Filter By :</p>
-            {/* <Select 
-              defaultValue="name" 
-              onChange={handleChange} 
-              style={{ width: 200 }}
-              size='large'>
-              <Option value="name">Name</Option>
-              <Option value="newest">Newest first</Option>
-              <Option value="similarity">Similarity score</Option>
-              <Option value="status">Status</Option>
-            </Select> */}
             <Select 
               defaultValue={lecturerData.lecturer_courses[0]}
               onChange={handleChange} 

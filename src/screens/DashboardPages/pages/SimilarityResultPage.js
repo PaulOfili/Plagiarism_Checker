@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Progress, Button, Spin, message } from 'antd';
 import moment from "moment";
 import { getScanResult, createSubmittedFile, updateScanResult } from "../../../config/Firebase/firebase"
-import SimilarCardComponent from "../../../components/SimilarCardComponent";
+import SimilarResultCardComponent from "../../../components/SimilarResultCardComponent";
 
 function SimilarityResultPage({location, history}) {    
 
@@ -114,7 +114,7 @@ function SimilarityResultPage({location, history}) {
                         scannedResult.results.internet.slice(0,3).map(webpage => (
                             <div key={webpage.id} className="similarity-result-website-card">
                                 <a href={webpage.url} rel="noopener noreferrer" target="_blank">
-                                    <SimilarCardComponent 
+                                    <SimilarResultCardComponent 
                                         title={webpage.title}
                                         content={webpage.introduction}
                                         matchedWordsCount={webpage.matchedWords}

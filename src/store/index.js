@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
-import {throttle} from 'lodash';
+import { throttle } from 'lodash';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './reducers/rootReducer';
 import { loadStoreFromSessionStorage, saveStoreToSessionStorage } from '../session/sessionStorage'
